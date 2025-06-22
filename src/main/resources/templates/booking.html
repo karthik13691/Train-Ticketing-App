@@ -3,76 +3,178 @@
 <head>
     <title>Train Ticket Booking</title>
     <style>
-        .header-image {
-            width: 100%;
-            max-height: 300px;
-            object-fit: cover;
-            margin-bottom: 20px;
+        body {
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            background-image: url('https://www.travelandleisure.com/thmb/JDwWcMNo3TphEzbt1Hpq3a0fhZc=/750x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/TAL-Exterior-GSMRAILROAD0323-3514495770554377a37cb77a1bdcd9ed.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            font-family: Arial, sans-serif;
         }
-        .form-container {
-            max-width: 600px;
-            margin: 0 auto;
+
+        .content-wrapper {
+            min-height: 100vh;
+            background: rgba(0, 0, 0, 0.6);
             padding: 20px;
         }
-        .form-group {
-            margin-bottom: 15px;
+
+        .form-container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
         }
+
+        h1 {
+            color: #fff;
+            text-align: center;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
         label {
             display: block;
-            margin-bottom: 5px;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #333;
         }
+
         select, input {
             width: 100%;
-            padding: 8px;
-            margin-bottom: 10px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background-color: white;
+            font-size: 14px;
         }
+
+        .date-time-container {
+            display: flex;
+            gap: 15px;
+        }
+
+        .date-time-container .form-group {
+            flex: 1;
+        }
+
         button {
             background-color: #4CAF50;
             color: white;
-            padding: 10px 20px;
+            padding: 12px 24px;
             border: none;
             border-radius: 4px;
             cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+            transition: background-color 0.3s;
         }
+
         button:hover {
             background-color: #45a049;
+        }
+
+        @media (max-width: 768px) {
+            .form-container {
+                margin: 10px;
+                padding: 20px;
+            }
+
+            .date-time-container {
+                flex-direction: column;
+            }
         }
     </style>
 </head>
 <body>
-<img src="https://149895370.v2.pressablecdn.com/wp-content/uploads/2024/04/Scenic-Train-Ride-photos-4.png"
-     alt="Scenic Train" class="header-image">
+<div class="content-wrapper">
+    <h1>Train Ticket Booking</h1>
+    <div class="form-container">
+        <form action="/book" method="post">
+            <div class="form-group">
+                <label>Passenger Name:</label>
+                <input type="text"
+                       name="passengerName"
+                       required
+                       placeholder="Enter passenger name"
+                       pattern="[A-Za-z ]{2,50}"
+                       title="Please enter a valid name (2-50 characters, letters only)">
+            </div>
 
-<div class="form-container">
-    <h1>Book Your Train Ticket</h1>
-    <form action="/book" method="post">
-        <div class="form-group">
-            <label>Starting Station:</label>
-            <select name="startStation">
-                <option th:each="station : ${stations}"
-                        th:value="${station.key}"
-                        th:text="${station.value}">
-                </option>
-            </select>
-        </div>
+            <div class="form-group">
+                <label>Starting Station:</label>
+                <select name="startStation" required>
+                    <option value="">Select Starting Station</option>
+                    <option th:each="station : ${stations}"
+                            th:value="${station.key}"
+                            th:text="${station.value}">
+                    </option>
+                </select>
+            </div>
 
-        <div class="form-group">
-            <label>Destination Station:</label>
-            <select name="endStation">
-                <option th:each="station : ${stations}"
-                        th:value="${station.key}"
-                        th:text="${station.value}">
-                </option>
-            </select>
-        </div>
+            <div class="form-group">
+                <label>Destination Station:</label>
+                <select name="endStation" required>
+                    <option value="">Select Destination Station</option>
+                    <option th:each="station : ${stations}"
+                            th:value="${station.key}"
+                            th:text="${station.value}">
+                    </option>
+                </select>
+            </div>
 
-        <div class="form-group">
-            <label>Number of Passengers:</label>
-            <input type="number" name="passengerCount" min="1" value="1" required>
-        </div>
+            <div class="date-time-container">
+                <div class="form-group">
+                    <label>Travel Date:</label>
+                    <input type="date"
+                           name="travelDate"
+                           required
+                           th:min="${#temporals.format(minDate, 'yyyy-MM-dd')}"
+                           th:value="${#temporals.format(minDate, 'yyyy-MM-dd')}">
+                </div>
 
-        <button type="submit">Calculate Price</button>
-    </form>
+                <div class="form-group">
+                    <label>Travel Time:</label>
+                    <select name="travelTime" required>
+                        <option value="">Select Time</option>
+                        <option value="09:00">09:00 AM</option>
+                        <option value="11:00">11:00 AM</option>
+                        <option value="13:00">01:00 PM</option>
+                        <option value="15:00">03:00 PM</option>
+                        <option value="17:00">05:00 PM</option>
+                        <option value="19:00">07:00 PM</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Number of Passengers:</label>
+                <input type="number"
+                       name="passengerCount"
+                       min="1"
+                       max="8"
+                       value="1"
+                       required>
+            </div>
+
+            <div class="form-group">
+                <label>Email Address:</label>
+                <input type="email"
+                       name="email"
+                       required
+                       placeholder="Enter your email for confirmation">
+            </div>
+
+            <button type="submit">Book Ticket</button>
+        </form>
+    </div>
 </div>
 </body>
 </html>

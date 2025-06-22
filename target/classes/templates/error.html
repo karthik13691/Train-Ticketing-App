@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Error</title>
+  <style>
+    body {
+        font-family: Arial, sans-serif;
+        line-height: 1.6;
+        margin: 0;
+        padding: 20px;
+        background-color: #f8f9fa;
+    }
+    .error-container {
+        max-width: 600px;
+        margin: 50px auto;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        text-align: center;
+    }
+    .error-message {
+        color: #dc3545;
+        margin: 20px 0;
+    }
+    .back-button {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #4CAF50;
+        color: white;
+        text-decoration: none;
+        border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+<div class="error-container">
+  <h1>Error</h1>
+  <div class="error-message" th:text="${error}">An error occurred</div>
+  <a href="/" class="back-button">Back to Booking</a>
+</div>
+</body>
+</html>

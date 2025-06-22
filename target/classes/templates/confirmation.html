@@ -3,52 +3,157 @@
 <head>
   <title>Booking Confirmation</title>
   <style>
+    body {
+        margin: 0;
+        padding: 0;
+        min-height: 100vh;
+        background-image: url('https://i.ytimg.com/vi/xN8Cs2X_RCk/sddefault.jpg?v=639d9f57');
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+        font-family: Arial, sans-serif;
+    }
+
+    .content-wrapper {
+        min-height: 100vh;
+        background: rgba(0, 0, 0, 0.7);
+        padding: 20px;
+    }
+
     .confirmation-container {
         max-width: 600px;
         margin: 0 auto;
-        padding: 20px;
+        padding: 30px;
         text-align: center;
     }
+
     .ticket-image {
         width: 200px;
-        margin: 20px 0;
+        margin: 20px auto;
+        display: block;
+        border-radius: 10px;
+        box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
     }
+
     .confirmation-details {
-        background-color: #f9f9f9;
-        padding: 20px;
-        border-radius: 8px;
+        background-color: rgba(255, 255, 255, 0.95);
+        padding: 30px;
+        border-radius: 10px;
         margin: 20px 0;
+        text-align: left;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
     }
-    .back-button {
+
+    .detail-row {
+        margin: 15px 0;
+        padding: 10px 0;
+        border-bottom: 1px solid #eee;
+    }
+
+    .detail-label {
+        font-weight: bold;
+        color: #333;
+        width: 120px;
+        display: inline-block;
+    }
+
+    h1 {
+        color: white;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        margin-bottom: 30px;
+    }
+
+    .button-container {
+        margin-top: 20px;
+    }
+
+    .download-button, .back-button {
         background-color: #4CAF50;
         color: white;
-        padding: 10px 20px;
+        padding: 12px 24px;
         text-decoration: none;
         border-radius: 4px;
         display: inline-block;
-        margin-top: 20px;
+        margin: 10px;
+        transition: background-color 0.3s;
     }
-    .back-button:hover {
+
+    .download-button:hover, .back-button:hover {
         background-color: #45a049;
+    }
+
+    .email-status {
+        margin-top: 10px;
+        padding: 10px;
+        border-radius: 4px;
+        background-color: #e8f5e9;
+        color: #2e7d32;
+    }
+
+    @media (max-width: 768px) {
+        .confirmation-container {
+            padding: 15px;
+        }
+
+        .confirmation-details {
+            padding: 20px;
+        }
     }
   </style>
 </head>
 <body>
-<div class="confirmation-container">
-  <h1>Booking Confirmation</h1>
+<div class="content-wrapper">
+  <div class="confirmation-container">
+    <h1>Booking Confirmation</h1>
 
-  <img src="https://static.vecteezy.com/system/resources/previews/006/459/693/non_2x/train-ticket-icon-free-vector.jpg"
-       alt="Ticket Confirmed" class="ticket-image">
+    <img src="https://static.vecteezy.com/system/resources/previews/006/459/693/non_2x/train-ticket-icon-free-vector.jpg"
+         alt="Ticket Confirmed"
+         class="ticket-image">
 
-  <div class="confirmation-details">
-    <p>Your trip from <strong th:text="${startStation}"></strong>
-      to <strong th:text="${endStation}"></strong> has been confirmed.</p>
-    <p>Number of Passengers: <strong th:text="${passengerCount}"></strong></p>
-    <p>Trip cost: <strong>$<span th:text="${cost}"></span></strong></p>
-    <p>Happy Journey and Safe Travels!</p>
+    <div class="confirmation-details">
+      <div class="detail-row">
+        <span class="detail-label">Passenger:</span>
+        <span th:text="${passengerName}"></span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-label">From:</span>
+        <span th:text="${startStation}"></span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-label">To:</span>
+        <span th:text="${endStation}"></span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-label">Date:</span>
+        <span th:text="${#temporals.format(travelDate, 'MMMM dd, yyyy')}"></span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-label">Time:</span>
+        <span th:text="${travelTime}"></span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-label">Passengers:</span>
+        <span th:text="${passengerCount}"></span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-label">Total Cost:</span>
+        <span>$<span th:text="${cost}"></span></span>
+      </div>
+
+      <!-- Email status message -->
+      <div th:if="${emailSent}" class="email-status">
+        <i class="fas fa-check-circle"></i> Confirmation email sent to: <span th:text="${email}"></span>
+      </div>
+    </div>
+
+    <div class="button-container">
+      <a th:href="@{'/download-ticket/' + ${pdfPath.substring(pdfPath.lastIndexOf('/') + 1)}}"
+         class="download-button">
+        Download Ticket PDF
+      </a>
+      <a href="/" class="back-button">Book Another Ticket</a>
+    </div>
   </div>
-
-  <a href="/" class="back-button">Book Another Ticket</a>
 </div>
 </body>
 </html>

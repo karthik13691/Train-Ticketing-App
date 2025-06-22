@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Seat Selection</title>
+  <style>
+    .seat-map {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 10px;
+        margin: 20px;
+    }
+    .seat {
+        padding: 10px;
+        border: 1px solid #ddd;
+        cursor: pointer;
+        text-align: center;
+    }
+    .seat.selected {
+        background-color: #4CAF50;
+        color: white;
+    }
+    .seat.unavailable {
+        background-color: #ff0000;
+        cursor: not-allowed;
+    }
+  </style>
+</head>
+<body>
+<div class="seat-map">
+  <div th:each="seat : ${availableSeats}"
+       th:class="${seat.available ? 'seat' : 'seat unavailable'}"
+       th:data-seat="${seat.seatNumber}"
+       onclick="selectSeat(this)">
+    [[${seat.seatNumber}]]
+  </div>
+</div>
+<input type="hidden" id="selectedSeats" name="selectedSeats">
+</body>
+</html>
