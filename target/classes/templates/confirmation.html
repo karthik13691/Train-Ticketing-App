@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Booking Confirmation</title>
+  <style>
+    .confirmation-container {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+        text-align: center;
+    }
+    .ticket-image {
+        width: 200px;
+        margin: 20px 0;
+    }
+    .confirmation-details {
+        background-color: #f9f9f9;
+        padding: 20px;
+        border-radius: 8px;
+        margin: 20px 0;
+    }
+    .back-button {
+        background-color: #4CAF50;
+        color: white;
+        padding: 10px 20px;
+        text-decoration: none;
+        border-radius: 4px;
+        display: inline-block;
+        margin-top: 20px;
+    }
+    .back-button:hover {
+        background-color: #45a049;
+    }
+  </style>
+</head>
+<body>
+<div class="confirmation-container">
+  <h1>Booking Confirmation</h1>
+
+  <img src="https://static.vecteezy.com/system/resources/previews/006/459/693/non_2x/train-ticket-icon-free-vector.jpg"
+       alt="Ticket Confirmed" class="ticket-image">
+
+  <div class="confirmation-details">
+    <p>Your trip from <strong th:text="${startStation}"></strong>
+      to <strong th:text="${endStation}"></strong> has been confirmed.</p>
+    <p>Number of Passengers: <strong th:text="${passengerCount}"></strong></p>
+    <p>Trip cost: <strong>$<span th:text="${cost}"></span></strong></p>
+    <p>Happy Journey and Safe Travels!</p>
+  </div>
+
+  <a href="/" class="back-button">Book Another Ticket</a>
+</div>
+</body>
+</html>
